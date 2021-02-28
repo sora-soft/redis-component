@@ -12,9 +12,8 @@ export interface IRedisComponentOptions extends IComponentOptions {
 }
 
 class RedisComponent extends Component {
-  setOptions(options: IRedisComponentOptions) {
+  protected setOptions(options: IRedisComponentOptions) {
     this.redisOptions_ = options;
-    super.setOptions(options);
   }
 
   protected async connect() {
