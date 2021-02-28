@@ -1,0 +1,3 @@
+export enum RedisErrorCode {
+  ERR_COMPONENT_NOT_CONNECTED = `ERR_COMPONENT_NOT_CONNECTED`
+}
