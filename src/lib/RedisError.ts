@@ -3,7 +3,7 @@ import {RedisErrorCode} from './RedisErrorCode';
 
 class RedisError extends ExError {
   constructor(code: RedisErrorCode, message: string) {
-    super(code, message);
+    super(code, 'RedisError', message);
     Object.setPrototypeOf(this, RedisError.prototype);
     Error.captureStackTrace(this, this.constructor);
   }
