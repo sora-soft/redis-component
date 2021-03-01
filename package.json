@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "prepublishOnly": "rimraf ./dist && tsc",
+    "link": "npm link @sora-soft/framework",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "git@github.com/sora-soft/redis-component.git",
@@ -17,7 +18,7 @@
   "homepage": "https://github.com/sora-soft/redis-component#readme",
   "dependencies": {
     "@camaro/redis": "^2.0.0",
-    "@sora-soft/framework": "^1.0.7"
+    "@sora-soft/framework": "^1.0.8"
   },
   "devDependencies": {
     "@types/assert": "^1.5.4",
