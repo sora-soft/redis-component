@@ -23,8 +23,7 @@ class RedisComponent extends Component {
   }
 
   protected async disconnect() {
-    // https://github.com/camarojs/redis/pull/13
-    // await this.client_.QUIT();
+    await this.client_.QUIT();
     this.client_ = null;
     Runtime.frameLogger.success('component.redis', { event: 'disconnect', target: {host: this.redisOptions_.host, port: this.redisOptions_.port, db: this.redisOptions_.db} });
   }
