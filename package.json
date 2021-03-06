@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/sora-soft/redis-component#readme",
   "dependencies": {
-    "@camaro/redis": "^2.0.1",
-    "@sora-soft/framework": "^1.0.8"
+    "@sora-soft/framework": "^1.0.8",
+    "handy-redis": "^2.2.1",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "@types/assert": "^1.5.4",
