@@ -1,7 +1,10 @@
-import {Component, IComponentOptions, Runtime} from '@sora-soft/framework';
+import {Component, IComponentOptions, Runtime, Utility} from '@sora-soft/framework';
 import {RedisError} from './RedisError';
 import {RedisErrorCode} from './RedisErrorCode';
 import {createNodeRedisClient, WrappedNodeRedisClient} from 'handy-redis';
+
+// tslint:disable-next-line
+const pkg = require('../../package.json');
 
 export interface IRedisComponentOptions extends IComponentOptions {
   host: string;
@@ -19,13 +22,11 @@ class RedisComponent extends Component {
 
   protected async connect() {
     this.client_ = createNodeRedisClient(this.redisOptions_);
-    Runtime.frameLogger.success('component.redis', { event: 'connect', target: {host: this.redisOptions_.host, port: this.redisOptions_.port, db: this.redisOptions_.db} });
   }
 
   protected async disconnect() {
     await this.client_.quit();
     this.client_ = null;
-    Runtime.frameLogger.success('component.redis', { event: 'disconnect', target: {host: this.redisOptions_.host, port: this.redisOptions_.port, db: this.redisOptions_.db} });
   }
 
   get client() {
@@ -43,6 +44,14 @@ class RedisComponent extends Component {
     if (content)
       return JSON.parse(content);
     return null;
+  }
+
+  get version() {
+    return pkg.version;
+  }
+
+  logOptions() {
+    return Utility.hideKeys(this.redisOptions_, ['password']);
   }
 
   private redisOptions_: IRedisComponentOptions;
