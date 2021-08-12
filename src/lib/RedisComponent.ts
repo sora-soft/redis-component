@@ -25,7 +25,7 @@ class RedisComponent extends Component {
   }
 
   protected async disconnect() {
-    await this.client_.quit();
+    await this.client.quit();
     this.client_ = null;
   }
 
@@ -36,11 +36,14 @@ class RedisComponent extends Component {
   }
 
   async setJSON(key: string, object: Object, ttlMs?: number) {
-    await this.client_.set(key, JSON.stringify(object), ['PX', ttlMs]);
+    if (ttlMs)
+      await this.client.set(key, JSON.stringify(object), ['PX', ttlMs]);
+    else
+      await this.client.set(key, JSON.stringify(object));
   }
 
   async getJSON(key: string) {
-    const content = await this.client_.get(key);
+    const content = await this.client.get(key);
     if (content)
       return JSON.parse(content);
     return null;
@@ -55,7 +58,7 @@ class RedisComponent extends Component {
   }
 
   private redisOptions_: IRedisComponentOptions;
-  private client_: WrappedNodeRedisClient;
+  private client_: WrappedNodeRedisClient | null;
 }
 
 export {RedisComponent}
