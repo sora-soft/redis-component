@@ -1,4 +1,4 @@
-import {Component, IComponentOptions, Runtime, Utility} from '@sora-soft/framework';
+import {Component, IComponentOptions, Utility} from '@sora-soft/framework';
 import {RedisError} from './RedisError';
 import {RedisErrorCode} from './RedisErrorCode';
 import {createNodeRedisClient, WrappedNodeRedisClient} from 'handy-redis';
