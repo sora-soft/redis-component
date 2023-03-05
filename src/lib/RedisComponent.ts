@@ -1,10 +1,10 @@
-import {Component, IComponentOptions, Utility} from '@sora-soft/framework';
+import {Component, IComponentOptions} from '@sora-soft/framework';
 import {RedisError} from './RedisError';
 import {RedisErrorCode} from './RedisErrorCode';
 import {createNodeRedisClient, WrappedNodeRedisClient} from 'handy-redis';
 
-// tslint:disable-next-line
-const pkg = require('../../package.json');
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
+const pkg: {version: string} = require('../../package.json');
 
 export interface IRedisComponentOptions extends IComponentOptions {
   host: string;
@@ -22,6 +22,7 @@ class RedisComponent extends Component {
 
   protected async connect() {
     this.client_ = createNodeRedisClient(this.redisOptions_);
+    await this.client_.ping();
   }
 
   protected async disconnect() {
@@ -35,17 +36,17 @@ class RedisComponent extends Component {
     return this.client_;
   }
 
-  async setJSON(key: string, object: Object, ttlMs?: number) {
+  async setJSON<T>(key: string, object: T, ttlMs?: number) {
     if (ttlMs)
       await this.client.set(key, JSON.stringify(object), ['PX', ttlMs]);
     else
       await this.client.set(key, JSON.stringify(object));
   }
 
-  async getJSON(key: string) {
+  async getJSON<T>(key: string) {
     const content = await this.client.get(key);
     if (content)
-      return JSON.parse(content);
+      return JSON.parse(content) as T;
     return null;
   }
 
@@ -53,12 +54,8 @@ class RedisComponent extends Component {
     return pkg.version;
   }
 
-  logOptions() {
-    return Utility.hideKeys(this.redisOptions_, ['password']);
-  }
-
   private redisOptions_: IRedisComponentOptions;
   private client_: WrappedNodeRedisClient | null;
 }
 
-export {RedisComponent}
+export {RedisComponent};

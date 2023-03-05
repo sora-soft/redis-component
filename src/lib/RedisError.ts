@@ -9,5 +9,4 @@ class RedisError extends ExError {
   }
 }
 
-
-export {RedisError}
+export {RedisError};
