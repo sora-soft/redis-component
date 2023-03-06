@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "rimraf ./dist && ttsc",
+    "prepublishOnly": "rimraf ./dist && tsc",
     "prepare": "husky install",
     "preversion": "lint-staged && npm run build",
     "preCommit": "lint-staged"
