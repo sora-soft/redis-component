@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && ttsc",
+    "prepublishOnly": "rimraf ./dist && ttsc",
     "prepare": "husky install",
     "preversion": "lint-staged && npm run build",
     "preCommit": "lint-staged"
@@ -52,6 +52,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
     "rimraf": "^3.0.2",
+    "ttypescript": "^1.5.15",
     "typescript": "^4.9.0"
   }
 }
