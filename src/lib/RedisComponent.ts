@@ -1,10 +1,13 @@
-import {Component, IComponentOptions} from '@sora-soft/framework';
-import {RedisError} from './RedisError';
-import {RedisErrorCode} from './RedisErrorCode';
-import {createNodeRedisClient, WrappedNodeRedisClient} from 'handy-redis';
+import {Component, ExError, IComponentOptions, Logger, Runtime} from '@sora-soft/framework';
+import {RedisError} from './RedisError.js';
+import {RedisErrorCode} from './RedisErrorCode.js';
+import {createClient, RedisClientType} from 'redis';
+import {readFile} from 'fs/promises';
+import {AssertType, ValidateClass} from '@sora-soft/type-guard';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-const pkg: {version: string} = require('../../package.json');
+const pkg = JSON.parse(
+  await readFile(new URL('../../package.json', import.meta.url), {encoding: 'utf-8'})
+) as {version: string};
 
 export interface IRedisComponentOptions extends IComponentOptions {
   host: string;
@@ -15,18 +18,24 @@ export interface IRedisComponentOptions extends IComponentOptions {
   prefix: string;
 }
 
+@ValidateClass()
 class RedisComponent extends Component {
-  protected setOptions(options: IRedisComponentOptions) {
+  protected setOptions(@AssertType() options: IRedisComponentOptions) {
     this.redisOptions_ = options;
   }
 
   protected async connect() {
-    this.client_ = createNodeRedisClient(this.redisOptions_);
+    this.client_ = createClient(this.redisOptions_);
+    this.client_.on('error', (err: ExError) => {
+      Runtime.frameLogger.error(`component.${this.name}`, err, {event: 'redis-client-error', err: Logger.errorMessage(err)});
+      this.client_ = null;
+    });
+    await this.client_.connect();
     await this.client_.ping();
   }
 
   protected async disconnect() {
-    await this.client.quit();
+    await this.client.disconnect();
     this.client_ = null;
   }
 
@@ -38,7 +47,7 @@ class RedisComponent extends Component {
 
   async setJSON<T>(key: string, object: T, ttlMs?: number) {
     if (ttlMs)
-      await this.client.set(key, JSON.stringify(object), ['PX', ttlMs]);
+      await this.client.set(key, JSON.stringify(object), {PX: ttlMs});
     else
       await this.client.set(key, JSON.stringify(object));
   }
@@ -55,7 +64,7 @@ class RedisComponent extends Component {
   }
 
   private redisOptions_: IRedisComponentOptions;
-  private client_: WrappedNodeRedisClient | null;
+  private client_: RedisClientType | null;
 }
 
 export {RedisComponent};

@@ -1,5 +1,5 @@
 import {ExError} from '@sora-soft/framework';
-import {RedisErrorCode} from './RedisErrorCode';
+import {RedisErrorCode} from './RedisErrorCode.js';
 
 class RedisError extends ExError {
   constructor(code: RedisErrorCode, message: string) {
