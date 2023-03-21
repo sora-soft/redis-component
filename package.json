@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@sora-soft/framework": "^1.9.0",
-    "@sora-soft/type-guard": "^1.0.2",
+    "@sora-soft/type-guard": "^1.0.5",
     "redis": "4.6.5"
   },
   "devDependencies": {

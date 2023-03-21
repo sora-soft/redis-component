@@ -10,12 +10,16 @@ const pkg = JSON.parse(
 ) as {version: string};
 
 export interface IRedisComponentOptions extends IComponentOptions {
-  host: string;
-  port: number;
-  db: number;
+  url: string;
+  database: number;
   username?: string;
   password?: string;
-  prefix: string;
+  name?: string;
+  commandsQueueMaxLength?: number;
+  disableOfflineQueue?: boolean;
+  readonly?: boolean;
+  legacyMode?: boolean;
+  pingInterval?: number;
 }
 
 @ValidateClass()
