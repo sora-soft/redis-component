@@ -32,15 +32,20 @@
     ".": "./dist/index.js",
     "./redis": {
       "import": "./dist/redis.js"
+    },
+    "./redlock": {
+      "import": "./dist/redlock.js"
     }
   },
   "dependencies": {
     "@sora-soft/framework": "^1.10.4",
     "@sora-soft/type-guard": "^1.1.0",
-    "redis": "4.6.5"
+    "redis": "^4.6.5",
+    "redlock": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.27",
+    "@types/redlock": "^4.0.4",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "eslint": "^8.35.0",

@@ -13,7 +13,8 @@
     "emitDecoratorMetadata": true,
     "plugins": [{
       "transform": "@sora-soft/type-guard/dist/transformer"
-    }]
+    }],
+    "typeRoots": ["./node_modules/@types", "./src/typings"],
   },
   "include": [
     "./src/**/*",
