@@ -1,4 +1,4 @@
-import {Component, ExError, IComponentOptions, Logger, Runtime} from '@sora-soft/framework';
+import {Component, IComponentOptions, Logger, Runtime} from '@sora-soft/framework';
 import {RedisError} from './RedisError.js';
 import {RedisErrorCode} from './RedisErrorCode.js';
 import {createClient, RedisClientType} from 'redis';
@@ -73,8 +73,9 @@ class RedisComponent extends Component {
   }
 
   protected async connect() {
-    this.client_ = createClient(this.redisOptions_);
-    this.client_.on('error', (err: ExError) => {
+    this.client_ = createClient({...this.redisOptions_});
+    this.client_.on('error', (e: Error) => {
+      const err = new RedisError(RedisErrorCode.ERR_REDIS_ERROR, `ERR_REDIS_ERROR, message=${e.message}`);
       Runtime.frameLogger.error(`component.${this.name}`, err, {event: 'redis-client-error', err: Logger.errorMessage(err)});
       this.client_ = null;
     });
